@@ -4,7 +4,8 @@ import cors from "cors";
 import dotenv from 'dotenv';
 import connectToDB from "./utils/db.js";
 dotenv.config({});
-
+// MONGO_URI=mongodb+srv://vishwakarmashubhi80:FNzckjzDOY45g75q@cluster0.eocbc5l.mongodb.net/portal
+// PORT=8080
 const app = express();
 
 app.use(express.json());
