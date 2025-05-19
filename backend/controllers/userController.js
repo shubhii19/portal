@@ -23,7 +23,7 @@ export const registerController = async (req, res) => {
       fullname,
       email,
       phoneNumber,
-      password:hashedPassword,
+      password: hashedPassword,
       role,
     });
     return res.status(201).json({
@@ -99,15 +99,60 @@ export const loginController = async (req, res) => {
   }
 };
 
+export const logoutController = async (req, res) => {
+  try {
+    return res.status(200).cookie("token", "", { maxAge: 0 }).json({
+      message: "Logged out successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-export const logoutController = async (req,res)=>{
-    try {
-        return res.status(200).cookie("token","",{maxAge:0}).json({
-            message:"Logged out successfully",
-            success:true
-        })
-    } catch (error) {
-        console.log(error);
-        
+export const updateProfileController = async (req, res) => {
+  try {
+    const { fullname, email, phoneNumber, bio, skills } = req.body;
+    const file = req.file;
+
+    let skillsArray;
+    if (skills) {
+      skillsArray = skills.split(",");
     }
-}
+
+    const userID = req.id; //middleware authentication
+    let user = await User.findById(userID);
+
+    if (!user) {
+      return res.status(400).json({
+        message: "User not found.",
+        success: false,
+      });
+    }
+    // updating data
+    if (fullname) user.fullname = fullname;
+    if (email) user.email = email;
+    if (phoneNumber) user.phoneNumder = phoneNumber;
+    if (bio) user.profile.bio = bio;
+    if (skills) user.profile.skills = skillsArray;
+
+     await user.save();
+
+    user = {
+      _id: user._id,
+      fullname: user.fullname,
+      email: user.email,
+      phoneNumder: user.phoneNumder,
+      role: user.role,
+      profile: user.profile,
+    };
+
+    return res.status(200).json({
+      message: "Profile updated successfully",
+      user,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};

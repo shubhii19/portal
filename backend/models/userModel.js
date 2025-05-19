@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { StrictMode } from 'react';
+
 
 const userSchema = new mongoose.Schema({
     fullname:{
@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
         required:true,
         unique:true
     },
-    phoneNumder:{
+    phoneNumber:{
         type:Number,
         required:true
     },
