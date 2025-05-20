@@ -1,4 +1,4 @@
-import { Company } from "../models/companyModel";
+import { Company } from "../models/companyModel.js";
 
 export const registerCompanyController = async (req, res) => {
   try {
@@ -41,6 +41,10 @@ export const getCompanyController = async (req, res) => {
         success: false,
       });
     }
+    res.status(200).json({
+      companies,
+      success:true
+    })
   } catch (error) {
     console.log(error);
   }
@@ -67,7 +71,23 @@ export const getCompanyByIdController = async (req, res) => {
 
 export const updateCompanyController = async(req,res)=>{
     try {
-        
+        const {name,description,website,location} = req.body;
+        const file = req.file;
+        // cloudinary
+
+        const updateData = {name,description,website,location};
+        const company  = await Company.findByIdAndUpdate(req.params.id, updateData,{new:true});
+
+        if(!company){
+          return res.status(404).json({
+            message:"Company not found.",
+            success:"false"
+          })
+        }
+        return res.status(200).json({
+          message:"Company information updated",
+          success:true
+        })
     } catch (error) {
         console.log(error);
         
