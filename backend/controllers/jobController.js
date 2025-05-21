@@ -1,4 +1,4 @@
-import { json } from "express";
+// import { json } from "express";
 import { Job } from "../models/jobModel.js";
 
 export const postJobController = async (req, res) => {
@@ -54,3 +54,65 @@ export const postJobController = async (req, res) => {
     console.log(error);
   }
 };
+
+export const getAllJobsController = async (req,res)=>{
+  try {
+    const keyword = req.query.keyword || "";
+    const query =  {
+      $or:[
+        {title:{$regex:keyword, $options:"i"}},
+        {description:{$regex:keyword, $options:"i"}}
+      ]
+    }
+    const jobs = await Job.find(query).populate({
+      path:"company"
+    }).sort({created_by:-1});
+    if(!jobs){
+      return res.status(404).json({
+        message:"Jobs not found",
+        success:false
+      })
+    }
+    return res.status(200).json({
+      jobs,
+      success:true
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getjobByIdController = async (req,res)=>{
+  try {
+    const jobId = req.params.id;
+    const job = await Job.findById(jobId);
+    if(!job){
+      return res.status(404).json({
+        message:"Jobs not found.",
+        success:false
+      })
+    };
+    return res.status(200).json({job,success:true})
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+
+
+// admin ne kitne jobs create kiye hain abhi tk
+export const getAdminJobsController = async(req,res)=>{
+  try {
+    const adminId = req.id;
+    const jobs = await Job.find({created_by:adminId});
+    if(!jobs){
+      return res.status(404).json({
+        message:"Jobs not found.",
+        success:false
+      })
+    }
+    return res.status(200).json({jobs,success:true})
+  } catch (error) {
+    console.log(error)
+  }
+}
