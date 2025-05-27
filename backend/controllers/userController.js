@@ -115,8 +115,11 @@ export const logoutController = async (req, res) => {
 export const updateProfileController = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, bio, skills } = req.body;
+    console.log(fullname, email, phoneNumber, bio, skills )
     const file = req.file;
 
+    console.log("Body:", req.body);  // Debug ke liye
+    console.log("File:", file);
     let skillsArray;
     if (skills) {
       skillsArray = skills.split(",");

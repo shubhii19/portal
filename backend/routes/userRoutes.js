@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/register',singleUpload,registerController);
 router.post('/login',loginController);
-router.post('/profile/update',isAuthenticated,updateProfileController);
+router.post('/profile/update',isAuthenticated,singleUpload,updateProfileController);
 router.get('/logout',logoutController)
 
 
