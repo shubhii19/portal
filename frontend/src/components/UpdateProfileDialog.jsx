@@ -13,7 +13,8 @@ import { Loader2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { USER_API_END_POINT } from "@/utils/constant";
-import { setUser } from "@/redux/authSlice";
+// import { setUser } from "@/redux/authSlice";
+import { setUser } from '../redux/authSlice';
 import { toast } from "sonner";
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
@@ -57,6 +58,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
             },
             withCredentials:true
         });
+        console.log("API Response:", res.data);
         if(res.data.success){
             dispatch(setUser(res.data.user));
             toast.success(res.data.message)
@@ -181,4 +183,3 @@ export default UpdateProfileDialog;
 
 
 
-// 7:13:00

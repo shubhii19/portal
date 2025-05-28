@@ -79,7 +79,7 @@ export const loginController = async (req, res) => {
       _id: user._id,
       fullname: user.fullname,
       email: user.email,
-      phoneNumder: user.phoneNumder,
+      phoneNumber: user.phoneNumber,
       role: user.role,
       profile: user.profile,
     };
@@ -118,8 +118,8 @@ export const updateProfileController = async (req, res) => {
     console.log(fullname, email, phoneNumber, bio, skills )
     const file = req.file;
 
-    console.log("Body:", req.body);  // Debug ke liye
-    console.log("File:", file);
+    console.log("Body h ye :", req.body);  // Debug ke liye
+    console.log("File h ye : ", file);
     let skillsArray;
     if (skills) {
       skillsArray = skills.split(",");
@@ -137,7 +137,7 @@ export const updateProfileController = async (req, res) => {
     // updating data
     if (fullname) user.fullname = fullname;
     if (email) user.email = email;
-    if (phoneNumber) user.phoneNumder = phoneNumber;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
     if (bio) user.profile.bio = bio;
     if (skills) user.profile.skills = skillsArray;
 
@@ -147,7 +147,7 @@ export const updateProfileController = async (req, res) => {
       _id: user._id,
       fullname: user.fullname,
       email: user.email,
-      phoneNumder: user.phoneNumder,
+      phoneNumber: user.phoneNumber,
       role: user.role,
       profile: user.profile,
     };
