@@ -1,12 +1,14 @@
 import { User } from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import getDataUri from "../utils/datauri.js";
+import cloudinary from "../utils/cloudinary.js";
 
 export const registerController = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, password, role } = req.body;
     // console.log(fullname, email, phoneNumber, password, role);
-    
+
     if (!fullname || !email || !phoneNumber || !password || !role) {
       return res.status(400).json({
         message: "Something is missing",
@@ -115,16 +117,24 @@ export const logoutController = async (req, res) => {
 export const updateProfileController = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, bio, skills } = req.body;
-    console.log(fullname, email, phoneNumber, bio, skills )
+    console.log(fullname, email, phoneNumber, bio, skills);
     const file = req.file;
 
-    console.log("Body h ye :", req.body);  // Debug ke liye
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+
+
+
+
+    console.log("Body h ye :", req.body); // Debug ke liye
     console.log("File h ye : ", file);
     let skillsArray;
     if (skills) {
       skillsArray = skills.split(",");
     }
-
+    // if (file) {
+    //   user.profile.resume = file.filename; // or file.path depending on how you're storing it
+    // }
     const userID = req.id; //middleware authentication
     let user = await User.findById(userID);
 
@@ -140,8 +150,13 @@ export const updateProfileController = async (req, res) => {
     if (phoneNumber) user.phoneNumber = phoneNumber;
     if (bio) user.profile.bio = bio;
     if (skills) user.profile.skills = skillsArray;
-
-     await user.save();
+    // if (file) user.profile.resume = file.originalname;
+    if(cloudResponse){
+      user.profile.resume = cloudResponse.secure_url;
+      user.profile.resumeOriginalName = file.originalname;
+    }
+    console.log("CloudResponse: ",cloudResponse)
+    await user.save();
 
     user = {
       _id: user._id,

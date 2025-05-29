@@ -15,7 +15,8 @@ const Profile = () => {
   const [open, setOpen] = useState(false);
   const { user } = useSelector((store) => store.auth);
   console.log(user);
-  const isResume = user?.profile?.resume ;
+  const isResume = user?.profile?.resume;
+  console.log(user);
 
   return (
     <div>
@@ -75,7 +76,8 @@ const Profile = () => {
               href={user?.profile?.resume}
               className="text-blue-500 hover:underline cursor-pointer"
             >
-              {user?.profile?.resume?.split("/").pop() || "Download Resume"}
+              {user?.profile?.resumeOriginalName || "Download Resume"}
+              {/* {user?.profile?.resume?.split("/").pop() || "Download Resume"} */}
             </a>
           ) : (
             <span>NA</span>
