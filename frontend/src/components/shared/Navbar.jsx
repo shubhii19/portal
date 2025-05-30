@@ -58,7 +58,7 @@ const Navbar = () => {
               <PopoverTrigger asChild>
                 <Avatar className="cursor-pointer">
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    src={user?.profile?.profilePhoto}
                     alt="@shadcn"
                   />
                 </Avatar>
@@ -68,14 +68,14 @@ const Navbar = () => {
                   <div className="gap-2 flex space-y-2">
                     <Avatar className="cursor-pointer">
                       <AvatarImage
-                        src="https://github.com/shadcn.png"
+                        src={user?.profile?.profilePhoto}
                         alt="@shadcn"
                       />
                     </Avatar>
                     <div>
-                      <h4 className="font-medium">Patel Mern Stack</h4>
+                      <h4 className="font-medium">{user?.fullname}</h4>
                       <p className="text-sm text-muted-foreground">
-                        Lorem ipsum dolor sit amet.
+                        {user?.profile?.bio}
                       </p>
                     </div>
                   </div>
@@ -106,4 +106,3 @@ export default Navbar;
 
 
 
-// 7:41:00

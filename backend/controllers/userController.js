@@ -15,6 +15,9 @@ export const registerController = async (req, res) => {
         success: false,
       });
     }
+    const file = req.file;
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content)
     const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({
@@ -29,6 +32,9 @@ export const registerController = async (req, res) => {
       phoneNumber,
       password: hashedPassword,
       role,
+      profile:{
+        profilePhoto:cloudResponse.secure_url
+      }
     });
     return res.status(201).json({
       message: "Account created successfully",
@@ -120,11 +126,15 @@ export const updateProfileController = async (req, res) => {
     console.log(fullname, email, phoneNumber, bio, skills);
     const file = req.file;
 
-    const fileUri = getDataUri(file);
-    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+    let cloudResponse;
+    let fileUri;
+    if(file){
+       fileUri = getDataUri(file);
+    cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+    }
 
-
-
+    // const fileUri = getDataUri(file);
+    // const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
     console.log("Body h ye :", req.body); // Debug ke liye
     console.log("File h ye : ", file);
@@ -165,6 +175,7 @@ export const updateProfileController = async (req, res) => {
       phoneNumber: user.phoneNumber,
       role: user.role,
       profile: user.profile,
+     
     };
 
     return res.status(200).json({
