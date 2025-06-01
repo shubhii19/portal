@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../shared/Navbar";
-// import { Button } from "../ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2, Loader2Icon } from "lucide-react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useNavigate, useParams } from "react-router-dom";
@@ -10,10 +9,12 @@ import { COMPANY_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import store from "@/redux/store";
-import { Loader2 } from "lucide";
 import { Button } from "../ui/button";
+import useGetCompanyById from "@/hooks/useGetCompanyById";
 
 const CompanySetUp = () => {
+  const params = useParams();
+  useGetCompanyById(params.id)
   const [input, setInput] = useState({
     name: "",
     description: "",
@@ -24,7 +25,7 @@ const CompanySetUp = () => {
 
   const { singleCompany } = useSelector((store) => store.company);
   const [loading, setLoading] = useState(false);
-  const params = useParams();
+  
   const navigate = useNavigate();
 
   const changeEventHandler = (e) => {
@@ -164,5 +165,4 @@ export default CompanySetUp;
 
 
 
-
-// 10:06:00
+// 10:38:33

@@ -1,4 +1,6 @@
 import { Company } from "../models/companyModel.js";
+import cloudinary from "../utils/cloudinary.js";
+import getDataUri from "../utils/datauri.js";
 
 export const registerCompanyController = async (req, res) => {
   try {
@@ -69,27 +71,76 @@ export const getCompanyByIdController = async (req, res) => {
   }
 };
 
-export const updateCompanyController = async(req,res)=>{
-    try {
-        const {name,description,website,location} = req.body;
-        const file = req.file;
-        // cloudinary
+// export const updateCompanyController = async(req,res)=>{
+//     try {
+//         const {name,description,website,location} = req.body;
+//         const file = req.file;
+//         // cloudinary
 
-        const updateData = {name,description,website,location};
-        const company  = await Company.findByIdAndUpdate(req.params.id, updateData,{new:true});
+//         const fileUri = getDataUri(file);
+//         const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+//         const logo = cloudResponse.secure_url;
 
-        if(!company){
-          return res.status(404).json({
-            message:"Company not found.",
-            success:"false"
-          })
-        }
-        return res.status(200).json({
-          message:"Company information updated",
-          success:true
-        })
-    } catch (error) {
-        console.log(error);
+//         const updateData = {name,description,website,location,logo};
+//         const company  = await Company.findByIdAndUpdate(req.params.id, updateData,{new:true});
+
+//         if(!company){
+//           return res.status(404).json({
+//             message:"Company not found.",
+//             success:"false"
+//           })
+//         }
+//         return res.status(200).json({
+//           message:"Company information updated",
+//           success:true
+//         })
+//     } catch (error) {
+//         console.log(error);
         
+//     }
+// }
+
+
+// import getDataUri from "../utils/datauri.js";
+// import cloudinary from "cloudinary";
+// import Company from "../models/Company.js";
+
+export const updateCompanyController = async (req, res) => {
+  try {
+    const { name, description, website, location } = req.body;
+    const file = req.file;
+
+    let logo; // optional logo URL
+
+    if (file) {
+      const fileUri = getDataUri(file);
+      const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+      logo = cloudResponse.secure_url;
     }
-}
+
+    const updateData = { name, description, website, location };
+    if (logo) updateData.logo = logo;
+
+    const company = await Company.findByIdAndUpdate(req.params.id, updateData, { new: true });
+
+    if (!company) {
+      return res.status(404).json({
+        message: "Company not found.",
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      message: "Company information updated",
+      success: true,
+      data: company,
+    });
+
+  } catch (error) {
+    console.error("Update Company Error:", error);
+    return res.status(500).json({
+      message: "Internal server error",
+      success: false,
+    });
+  }
+};
