@@ -61,4 +61,3 @@ export default AppliedJobTable;
 
 
 
-// 12:49:46

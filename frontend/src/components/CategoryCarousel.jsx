@@ -1,6 +1,15 @@
 import React from "react";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "./ui/carousel";
 import { Button } from "./ui/button";
+import { setSearchedQuery } from "@/redux/jobSlice";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 const category = [
   "Frontend Developer",
   "Backend Developer",
@@ -9,6 +18,13 @@ const category = [
   "FullStack Developer",
 ];
 const CategoryCarousel = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();;
+  const searchJobHandler = (query) => {
+    dispatch(setSearchedQuery(query));
+    navigate("/browse");
+  };
+
   return (
     <div>
       <Carousel className="w-full max-w-xl mx-auto my-20">
