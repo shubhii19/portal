@@ -3,7 +3,7 @@
 // export const APPLICATION_API_END_POINT="http://localhost:8000/api/v1/application";
 // export const COMPANY_API_END_POINT="http://localhost:8000/api/v1/company";
 
-const BASE_URL = "https://job-portal-b-aldx.onrender.com";
+const BASE_URL = "https://portal-adtn.onrender.com";
 
 export const USER_API_END_POINT = `${BASE_URL}/user`;
 export const JOB_API_END_POINT = `${BASE_URL}/job`;
