@@ -23,6 +23,13 @@ const corsOptions = {
     credentials:true
 }
 
+
+
+
+
+
+// connected
+
 app.use(cors(corsOptions));
 // connectToDB();
 const PORT = process.env.PORT || 3000;
@@ -41,3 +48,9 @@ app.listen(PORT,()=>{
     // console.log(connectToDB())
     console.log(`Server is running on port ${PORT}`)
 })
+
+
+
+
+// repo name ---> portal
+// deployeddd
