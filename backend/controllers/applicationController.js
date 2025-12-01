@@ -6,7 +6,7 @@ export const applyJobController = async (req, res) => {
     const userId = req.id;
     const jobId = req.params.id;
     if (!jobId) {
-      return res.status(400).json({
+      return res.status(400).json({  
         message: "Job id is required",
         success: false,
       });
